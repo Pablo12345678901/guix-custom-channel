@@ -32,4 +32,5 @@
      (license gpl3+))
    )
 
+
 ;; my-hello-avanced ;; Uncomment this line to be able to install the package 'my-hello-avanced' with the command 'guix package -f PATH/TO/my-hello-avanced.scm'
