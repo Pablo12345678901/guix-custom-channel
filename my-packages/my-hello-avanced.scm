@@ -6,7 +6,7 @@
 ;; guix build -L FILE-DIR PACKAGE-NAME
 
 (define-module
- (my-packages my-hello-packages)
+ (my-packages my-hello-avanced)
  #:use-module (guix)
  #:use-module (guix build-system gnu)
  #:use-module (guix download)
