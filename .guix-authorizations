@@ -1,0 +1,9 @@
+(authorizations
+ (version 0)               ;current file format version
+
+ (
+  ("0D7B 6A70 BC67 2797 FB0A 76C7 97A2 37BC 430D 199D"
+   (name "Pablo ZAMORA")
+  ) ; Obtained with 'gpg --list-keys'
+ )
+)
