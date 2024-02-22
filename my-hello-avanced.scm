@@ -6,15 +6,15 @@
 ;; guix build -L FILE-DIR PACKAGE-NAME
 
 (define-module
- (my-packages my-hello-avanced)
- #:use-module (guix)
+ (my-hello-avanced)
+ ;;#:use-module (guix)
  #:use-module (guix build-system gnu)
  #:use-module (guix download)
- #:use-module (guix git)
- #:use-module (guix git-download)
+ ;,#:use-module (guix git)
+ ;;#:use-module (guix git-download)
  #:use-module (guix licenses)
  #:use-module (guix packages)
- #:use-module (guix utils)
+ ;;#:use-module (guix utils)
 )
 
 (define-public my-hello-avanced ;; Definition of public variable which get the value of the package returned by its definition below

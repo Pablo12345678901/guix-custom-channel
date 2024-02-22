@@ -1,6 +1,6 @@
 (channel
  (version 0)
  (url "https://github.com/Pablo12345678901/guix-custom-channel.git") ;; url of the channel
- (directory "my-packages") ;; dir of the module.scm files
+ ;;(directory "my-packages") ;; dir of the module.scm files
  (keyring-reference "keyring") ;; branch were is the public key
 )
