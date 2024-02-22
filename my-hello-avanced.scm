@@ -14,14 +14,14 @@
  (define-public my-hello-avanced ;; Definition of public variable which get the value of the package returned by its definition below
    (package
      (name "my-hello-avanced")
-     (version "2.10")
+     (version "2.12.1")
      (source (origin
 	       (method url-fetch)
 	       (uri (string-append "mirror://gnu/hello/hello-" version
 				   ".tar.gz"))
 	       (sha256
 		(base32
-		 "0ssi1wpaf7plaswqqjwigppsg5fyh99vdlb9kzl7c9lng89ndq1i"))))
+		 "086vqwk2wl8zfs47sq2xpjc9k066ilmb8z6dn0q6ymwjzlm196cd"))))
      (build-system gnu-build-system)
      (synopsis "Hello, Guix world: An example custom Guix package")
      (description
