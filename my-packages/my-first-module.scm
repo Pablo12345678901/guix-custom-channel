@@ -5,8 +5,9 @@
 ;; guix show -L FILE-DIR PACKAGE-NAME
 ;; guix build -L FILE-DIR PACKAGE-NAME
 
+;; Definition of the module containing the package(s)
 (define-module
- (my-hello-avanced)
+ (my-first-module)
  ;;#:use-module (guix)
  #:use-module (guix build-system gnu)
  #:use-module (guix download)
@@ -17,6 +18,7 @@
  ;;#:use-module (guix utils)
 )
 
+;; Definition of the package
 (define-public my-hello-avanced ;; Definition of public variable which get the value of the package returned by its definition below
  (package
   (name "my-hello-avanced")
