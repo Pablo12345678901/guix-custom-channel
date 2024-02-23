@@ -22,13 +22,16 @@
 (define-public my-hello-avanced ;; Definition of public variable which get the value of the package returned by its definition below
  (package
   (name "my-hello-avanced")
-  (version "2.12.1")
+  ;;(version "2.12.1")
+  (version "2.10") ;; For test to auto upgrade package definition
   (source
    (origin
     (method url-fetch)
     (uri (string-append "mirror://gnu/hello/hello-" version ".tar.gz"))
     (sha256
-     (base32 "086vqwk2wl8zfs47sq2xpjc9k066ilmb8z6dn0q6ymwjzlm196cd"))
+     ;;(base32 "086vqwk2wl8zfs47sq2xpjc9k066ilmb8z6dn0q6ymwjzlm196cd") ;; v2.12.1
+     (base32 "0ssi1wpaf7plaswqqjwigppsg5fyh99vdlb9kzl7c9lng89ndq1i") ;; v2.10
+    )
    )
   )
   (build-system gnu-build-system)
