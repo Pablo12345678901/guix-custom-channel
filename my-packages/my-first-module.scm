@@ -7,7 +7,7 @@
 
 ;; Definition of the module containing the package(s)
 (define-module
- (my-first-module)
+ (my-packages my-first-module) ;; Add 'my-packages' avoid modules name conflict
  ;;#:use-module (guix)
  #:use-module (guix build-system gnu)
  #:use-module (guix download)
