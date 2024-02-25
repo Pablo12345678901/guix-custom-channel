@@ -12,6 +12,10 @@
   #:use-module (gnu packages tls)
   #:use-module (gnu packages web))
 
+;; NOT WORKING BECAUSE OF VERSION ISSUE AND PATCH MISSING (see the 'patch' line)
+;; USE THIS ONLY TO UNDERSTAND HOW THINGS WORK
+;; FOR BUILDING A PACKAGE FROM SOURCE
+
 (define-public custom-complex-libgit2
  (let
    ((commit "e98d0a37c93574d2c6107bf7f31140b548c6a7bf")
@@ -39,8 +43,8 @@
 	;; git checkout v1.7.2
 	;; guix hash -rx .     
 !#
-     ;;
-     (patches (search-patches "libgit2-mtime-0.patch")) ;; 240225 : Temporary deactivate because it bugs the install.
+     
+     ;;(patches (search-patches "libgit2-mtime-0.patch")) ;; 240225 : Temporary deactivate because it bugs the install.
      (modules '((guix build utils)))
      
      ;; SNIPPETS
