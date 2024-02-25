@@ -40,7 +40,7 @@
 	;; guix hash -rx .     
 !#
      ;;
-     ;;(patches (search-patches "libgit2-mtime-0.patch")) ;; 240225 : Temporary deactivate because it bugs the install.
+     (patches (search-patches "libgit2-mtime-0.patch")) ;; 240225 : Temporary deactivate because it bugs the install.
      (modules '((guix build utils)))
      
      ;; SNIPPETS
