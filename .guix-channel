@@ -1,8 +1,9 @@
 (channel
  (version 0)
  (url "https://github.com/Pablo12345678901/guix-custom-channel.git") ;; url of the channel
- ;;(directory "directory-name-not-in-the-define-module-name") ;; dir of the module.scm files - so if a dir if specified, it should not be into the define-module definition, but all other subdir in the path should be precised into the denition :
- ;; (define-module (path to the module with space MODULENAME)) 
+ 
+ (directory "my-packages") ;; dir of the module.scm files - so if a dir if specified, it should not be into the define-module definition, but all other subdir in the path should be precised into the denition : (define-module (path to the module with space MODULENAME))
+ 
  (keyring-reference "keyring") ;; branch were is the public key
 
  ;; Depends on the nonguix channel
