@@ -20,7 +20,7 @@
       (git-reference
        (url "https://github.com/mamba-org/micromamba-releases/")
        (commit commit)))
-     (file-name (git-file-name name version)) ;; ensure that the source code from the Git repository is stored in a directory with a descriptive name - example : libgit2-version
+     (file-name (git-file-name name version)) ;; ensure that the source code from the Git repository is stored in a directory with a descriptive name.
      (sha256 (base32 "0iyl0cicqry5nkxbdac2gjqy28rnigz0n6vp1s43sv6mwcxy4g3y"))
         ;; obtained with :
 #!
@@ -29,14 +29,16 @@
 	;; git checkout VERSION ;; Change the branch to the required one. It can be on format 'vVERSION' or just 'VERSION' depending on the package.
 	;; guix hash -rx .     ;; Get the hash without including the '.git*' dirs.
 !#
-     
+
+    (modules '((guix build utils)))
+
      ;; SNIPPETS
      ;; No snippets here.
      ;; (snippet '(HERE))))
      )) ;; 'source' end
 
      ;; OUTPUTS
-     ;; No outputs here.
+     (outputs '("out")) ;; "out" is the complete package
 
      ;; INPUTS
      ;; No inputs here.
@@ -63,4 +65,5 @@
     (home-page "https://github.com/mamba-org/micromamba-releases")
     (synopsis "A small installer for conda packages")
     (description "Micromamba is a standalone installer for conda packages.")
-    (license license:asl2.0))))
+    (license license:asl2.0)) ;; 'package' end
+  ))
