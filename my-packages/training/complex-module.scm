@@ -38,10 +38,10 @@
      (sha256 (base32 "17pjvprmdrx4h6bb1hhc98w9qi6ki7yl57f090n9kbhswxqfs7s3"))
      ;; (sha256 (base32 "0i95jwrwx4svh5l4dpa5r4a99f813hlm7nzzkbqzmnw4pkyxhlvx")) ;; for v1.7.2 obtained with :
 #!
-	;; git clone https://github.com/libgit2/libgit2/
-	;; cd libgit2
-	;; git checkout v1.7.2
-	;; guix hash -rx .     
+     ;; git clone BASE_REPO_WITHOUT_DOT_GIT
+     ;; cd REPO
+     ;; git checkout VERSION ;; Change the branch to the required one. It can be on format 'vVERSION' or just 'VERSION' depending on the package.
+     ;; guix hash -rx .     ;; Get the hash without including the '.git*' dirs.   
 !#
      
      ;;(patches (search-patches "libgit2-mtime-0.patch")) ;; 240225 : Temporary deactivate because it bugs the install.
