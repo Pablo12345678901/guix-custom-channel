@@ -5,8 +5,7 @@
   #:use-module (guix download)
   #:use-module (guix packages)
   #:use-module ((guix licenses) #:prefix license:)
-  #:use-module (nonguix build-system binary) ;; Not ethical - to be changed 
- )
+  #:use-module (nonguix build-system binary))
 
 (define-public custom-micromamba
   (package
@@ -22,7 +21,7 @@
        (sha256
         (base32
          "11k91i9b0b1whzdp0my2kh2ad6g93s38rl4as2n417x085rk3mwa"))))
-    (build-system binary-build-system) ;; Not ethical - to be changed
+    (build-system binary-build-system)
     (arguments
      `(#:install-plan
        `(("bin" "/")
