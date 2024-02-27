@@ -22,7 +22,7 @@
              "/micromamba-linux-64.tar.bz2"))
        (sha256
         (base32
-         "0r8978h8p0qairq72nb0fvb3xbv78jh3ks05swagqi7jp9bifpdy"))))
+         "11k91i9b0b1whzdp0my2kh2ad6g93s38rl4as2n417x085rk3mwa"))))
     (build-system binary-build-system) ;; Not ethical - to be changed
     ;; Special git repo - contains a script to download the binary so no need to build it.
     (arguments
