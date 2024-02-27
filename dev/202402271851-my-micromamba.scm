@@ -1,4 +1,4 @@
-(define-module (my-packages custom-micromamba)
+(define-module (my-packages my-micromamba)
   #:use-module (gnu packages base)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages gcc)
