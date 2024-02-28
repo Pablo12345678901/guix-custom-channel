@@ -2,6 +2,7 @@
   #:use-module (gnu packages base)
   #:use-module (gnu packages gcc)
   #:use-module (gnu packages python-science) ;; for python-scipy
+  #:use-module (gnu packages python-web) ;; for python-smart-open
   #:use-module (gnu packages python-xyz) ;; for python-numpy
   #:use-module (guix build-system python)
   #:use-module (guix download)
@@ -24,7 +25,7 @@
     (build-system python-build-system)
     
     (arguments '(#:tests? #f)) ;; No tests available
-    (propagated-inputs (list python-numpy python-scipy)) ;; Just for build time.
+    (propagated-inputs (list python-numpy python-scipy python-smart-open)) ;; Just for build time.
     
     (home-page "https://github.com/piskvorky/gensim")
     (synopsis "My python-gensim package defined in my custom channel.")
