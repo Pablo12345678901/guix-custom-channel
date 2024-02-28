@@ -23,7 +23,7 @@
     
     (build-system python-build-system)
     
-    ;;(arguments '(#:tests? #f)) ;; No tests available
+    (arguments '(#:tests? #f)) ;; No tests available
     (propagated-inputs (list python-numpy python-scipy)) ;; Just for build time.
     
     (home-page "https://github.com/piskvorky/gensim")
