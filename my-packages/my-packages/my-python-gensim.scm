@@ -1,6 +1,8 @@
 (define-module (my-packages my-python-gensim)
   #:use-module (gnu packages base)
   #:use-module (gnu packages gcc)
+  #:use-module (gnu packages python-science) ;; for python-scipy
+  #:use-module (gnu packages python-xyz) ;; for python-numpy
   #:use-module (guix build-system python)
   #:use-module (guix download)
   #:use-module ((guix licenses) #:prefix license:)
