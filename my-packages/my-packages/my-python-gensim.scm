@@ -20,9 +20,9 @@
          "1aq8nghmxsj3schg22mmkzaq8hxzxj99zvam07kq41nlzzv6mb4r")))) ;; Obtained from the pypi website -> download source file -> guix hash FILENAMEDOWNLOADED
     
     (build-system python-build-system)
-
+    
     ;;(arguments '(#:tests? #f)) ;; No tests available
-    (propagated-inputs (list python-numpy python-scipy)) ;; Installed in the store and in the profile, as well as being present at build time.
+    (propagated-inputs (list python-numpy python-scipy)) ;; Just for build time.
     
     (home-page "https://github.com/piskvorky/gensim")
     (synopsis "My python-gensim package defined in my custom channel.")
