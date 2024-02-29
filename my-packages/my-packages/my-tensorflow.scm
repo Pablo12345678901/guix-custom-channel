@@ -1,4 +1,5 @@
-;; Customized the original file located 'gnu/packages/machine-learning.scm' in the guix source code git repository.
+;; Customized from the original file located 'gnu/packages/machine-learning.scm' in the guix source code git repository.
+
 
 (define-module (my-packages my-tensorflow)
   #:use-module ((guix licenses) #:prefix license:)
