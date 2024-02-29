@@ -1,9 +1,7 @@
 (define-module (my-packages my-python-tensorflow)
   #:use-module (gnu packages base)
   #:use-module (gnu packages gcc)
-  ;;#:use-module (gnu packages python-science)
-  ;;#:use-module (gnu packages python-web)
-  ;;#:use-module (gnu packages python-xyz) 
+  ;;#:use-module (gnu packages python-build) ;; python-pip
   #:use-module (guix build-system python)
   #:use-module (guix download)
   #:use-module ((guix licenses) #:prefix license:)
@@ -13,7 +11,7 @@
 (define-public my-python-tensorflow
   (package
    (name "my-python-tensorflow")
-    (version "2.15.0.post1") ;; version name on pypi.org
+    (version "2.15.0") ;; version name on pypi.org
     (source
      (origin
       (method url-fetch)
@@ -25,7 +23,9 @@
     (build-system python-build-system)
     
     (arguments '(#:tests? #f)) ;; No tests available
-    ;;(propagated-inputs (list )) ;; Just for build time.
+    ;;(propagated-inputs (list python-pip python-numpy )) ;; For build and after build
+    ;;  pip numpy wheel packaging requests opt_einsum
+    ;; pip install -U --user keras_preprocessing --no-deps
     
     (home-page "https://github.com/tensorflow/tensorflow")
     (synopsis "Package defined in my custom channel.")
