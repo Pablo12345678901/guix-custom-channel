@@ -111,7 +111,8 @@
         (base32
          "1lqaj129jc20y20z60ky9kmq7vbpwk85phy16nxpr53my894n8dl"))
        ;;(patches
-       ;; (search-patches "tensorflow-c-api-fix.patch"))))
+       ;; (search-patches "tensorflow-c-api-fix.patch"))
+       ))
     (build-system cmake-build-system)
     (arguments
      `(#:tests? #f                      ; no "check" target
