@@ -99,7 +99,7 @@
 (define-public my-tensorflow
   (package
     (name "my-tensorflow")
-    (version "2.1.15")
+    (version "2.15.0")
     (source
      (origin
        (method git-fetch)
@@ -109,7 +109,7 @@
        (file-name (string-append "tensorflow-" version "-checkout"))
        (sha256
         (base32
-         "1n2m2vp3d0qklp9pzkmsza2kgia5ky70rkfy2aicz6ri8azdk43n"))
+         "1lqaj129jc20y20z60ky9kmq7vbpwk85phy16nxpr53my894n8dl"))
        (patches
         (search-patches "tensorflow-c-api-fix.patch"))))
     (build-system cmake-build-system)
