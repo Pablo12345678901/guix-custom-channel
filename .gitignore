@@ -1,0 +1,8 @@
+# Ignore temporary files from emacs.
+*#*
+*~*
+
+# Ignore the 'dev' directory where file are saved for back-up in order to progress between version and be able to rollback.
+dev/*
+
+
