@@ -1,7 +1,11 @@
 (define-module (my-packages my-python-tensorflow)
   #:use-module (gnu packages base)
   #:use-module (gnu packages gcc)
-  ;;#:use-module (gnu packages python-build) ;; python-pip
+  #:use-module (gnu packages machine-learning)
+  #:use-module (gnu packages python-build)
+  #:use-module (gnu packages python-web)
+  #:use-module (gnu packages python-science)
+  #:use-module (gnu packages python-xyz)
   #:use-module (guix build-system python)
   #:use-module (guix download)
   #:use-module ((guix licenses) #:prefix license:)
@@ -23,10 +27,17 @@
     (build-system python-build-system)
     
     (arguments '(#:tests? #f)) ;; No tests available
-    ;;(propagated-inputs (list python-pip python-numpy )) ;; For build and after build
-    ;;  pip numpy wheel packaging requests opt_einsum
-    ;; pip install -U --user keras_preprocessing --no-deps
     
+    (propagated-inputs
+     (list
+      python-pip
+      python-numpy
+      python-wheel
+      python-requests
+      python-opt-einsum
+      python-keras-preprocessing
+     )) ;; For build and after build
+ 
     (home-page "https://github.com/tensorflow/tensorflow")
     (synopsis "Package defined in my custom channel.")
     (description "TensorFlow is an open source software library for high performance numerical computation. Its flexible architecture allows easy deployment of computation across a variety of platforms (CPUs, GPUs, TPUs), and from desktops to clusters of servers to mobile and edge devices.")
