@@ -6,16 +6,21 @@
   #:use-module (gnu packages build-tools) ; for meson/newer
   #:use-module (gnu packages cmake)
   #:use-module (gnu packages compression)
+  #:use-module (gnu packages elf) ; for libelf
   #:use-module (gnu packages gcc)
   #:use-module (gnu packages gettext)
   #:use-module (gnu packages glib)
+  #:use-module (gnu packages instrumentation) ; for systemtap
   #:use-module (gnu packages libffi)
   #:use-module (gnu packages linux) ; for util-linux
   #:use-module (gnu packages selinux)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages pcre)
+  #:use-module (gnu packages pth)
   #:use-module (gnu packages python)
   #:use-module (gnu packages python-xyz) ; for python-packaging
+  #:use-module (gnu packages valgrind)
+  #:use-module (gnu packages xml) ; for xmllint
   #:use-module (guix build-system meson) ;; for glib
   #:use-module (guix download)
   #:use-module (guix gexp)
@@ -335,18 +340,34 @@ index 4c70465..0fcc836 100644
       bash-completion
       cmake
       gcc
-      gettext
+      gnu-gettext ; for gettext
+      gobject-introspection
+      libelf
       libffi
       libiconv
+      libxml2 ; for xmllint
+      libxml2-xpath0 ; for xmllint with an additional patch
       pcre2
       pkg-config
+      pth ; for 'posix thread'
       ;;python ; already in
       python-packaging
       libselinux
+      systemtap
       util-linux ; for 'mount' - MOUNT IS STILL MISSING
+      valgrind
+      xmlsec ; for xmllint
       zlib
       ))
   ))  
+
+#!
+missing :
+Program valgrind found: NO -> should be corrected
+Program xmllint found: NO -> should be corrected
+Run-time dependency libelf found: NO (tried pkgconfig and cmake)
+Library elf found: NO
+!#
 
 ;; Comment this line after development tests.
 my-glib2
