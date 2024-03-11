@@ -1,14 +1,18 @@
-(define-module (my-packages my-gnokii
+(define-module (my-packages my-gnokii)
+  #:use-module (gnu packages autotools) ; for libtool, automake (for aclocal)
+  #:use-module (gnu packages base) ; for gnu-make (make)
   #:use-module (gnu packages flex)
   #:use-module (gnu packages gcc)
+  #:use-module (gnu packages glib)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages version-control) ; For git
+  #:use-module (guix build utils) ; for 'substitute' definition
   #:use-module (guix build-system gnu)
   #:use-module (guix download)
+  #:use-module (guix gexp) ; for regex in snippet
   #:use-module ((guix licenses) #:prefix license:)
-  #:use-module (guix packages)
-  #:use-module (my-packages my-glib2) ;; My custom glib2
- )
+  #:use-module (guix packages) ; for 'package' definition
+)
 
 (define-public my-gnokii
   (package
@@ -21,17 +25,32 @@
 	     "https://git.savannah.gnu.org/cgit/gnokii.git/snapshot/gnokii-rel_0_6_31.tar.gz"))
        (sha256
         (base32
-         "1iphhjsz9v1pk0a3p2zq09k44x7pyg1a6m3dcpf6n0bpyfgskpsn")))) ;; hash obtained with 'guix hash FILENAME.tar.bz2')
+         "1iphhjsz9v1pk0a3p2zq09k44x7pyg1a6m3dcpf6n0bpyfgskpsn"))))
+
     
     (build-system gnu-build-system)
-    (arguments '())
+    (arguments
+     (list
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-before 'bootstrap 'replace-commands-by-absolute-paths
+	      (lambda* (#:key inputs #:allow-other-keys)
+		; replace the command by the bash path in the store
+	        (substitute* "autogen.sh"  
+		(("glib-gettextize")
+	         (string-append (assoc-ref inputs "glib") "/bin/glib-gettextize")
+		  ))
+					)))))
     (inputs
      (list
+          autoconf ; for 'autom4te'
+          automake ; for 'aclocal'
           flex
           gcc
-	  my-glib2 ;; custom glib2 defined above
+	  `(,glib "bin") ; for 'glib-gettextize' in autogen.sh
           git
           gnu-make
+	  intltool ; for 'intltoolize' in autogen.sh
 	  libtool
           pkg-config
       )
