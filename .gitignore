@@ -2,7 +2,7 @@
 *#*
 *~*
 
-# Ignore the 'dev' directory where file are saved for back-up in order to progress between version and be able to rollback.
-dev/*
+# Ignore the directory where files are saved for back-up in order to progress between version and be able to rollback.
+back-up-while-in-dev/*
 
 
