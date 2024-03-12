@@ -5,7 +5,6 @@
   #:use-module (gnu packages flex)
   #:use-module (gnu packages gcc)
   #:use-module (gnu packages glib)
-  #:use-module (gnu packages networking) ; TEST
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages version-control) ; For git
   #:use-module (gnu packages wget)
@@ -15,6 +14,7 @@
   #:use-module (guix gexp) ; for regex in snippet
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages) ; for 'package' definition
+  #:use-module (ice-9 regex) ; for the 'match:substring' procedure 
 )
 
 #!    
@@ -69,82 +69,7 @@ doing nothing~%"))))
        "config.guess" ; NOT OK to be taken from ftp://ftp.gnu.org/pub/gnu/config/
        "config.sub" ; NOT OK to be taken from ftp://ftp.gnu.org/pub/gnu/config/
 !#
-#!
-     (list
-      #:phases
-      #~(modify-phases %standard-phases
-         (add-after 'unpack 'patch-more-shebangs
-           (lambda _
-             (substitute* "configure"
-               (("#! /bin/sh") (string-append "#! " (which "sh")))))))))
-!#
-#!
-; Block kept in case its is needed - works to replace the path into the 'autogen.sh file and
-; this block was replaced by a snippet below
-    (arguments
-     (list
-      #:phases
-      #~(modify-phases %standard-phases
-        (add-before 'bootstrap 'replace-commands-by-absolute-paths
-	      ;(lambda* (#:key outputs inputs #:allow-other-keys) ; uncomment this line when printing the output directory
-	      (lambda* (#:key inputs #:allow-other-keys)
-		; replace the command 'glib-gettextize' by its path in the store
-	        (substitute* "autogen.sh"  
-		(("glib-gettextize")
-		 (string-append (assoc-ref inputs "glib") "/bin/glib-gettextize")
-		 ;(target-directory (string-append (assoc-ref outputs "out") ; uncomment this line to print the output directory
-		 ))))
-!#
-#!
-;; Block kept in case, works.
-	  (add-before 'bootstrap 'copy-missing-files-with-macros
-            (lambda* (#:key outputs inputs #:allow-other-keys)
-			       (let*
-				   (
-				    (file-1 (string-append (assoc-ref inputs "gnulib") "/src/gnulib/m4/codeset.m4"))
-				    (file-2 (string-append (assoc-ref inputs "gnulib") "/src/gnulib/m4/gettext.m4"))
-				    (file-3 (string-append (assoc-ref inputs "gnulib") "/src/gnulib/m4/iconv.m4"))
-				    (file-4 (string-append (assoc-ref inputs "gnulib") "/src/gnulib/m4/lcmessage.m4"))
-				    (file-5 (string-append (assoc-ref inputs "gnulib") "/src/gnulib/m4/progtest.m4"))
-				    (list-of-files (list file-1 file-2 file-3 file-4 file-5))
-				    (target-directory (string-append (assoc-ref outputs "out") "/m4"))
-				    ; WARNING : For debugging, the /gnu/store hash in the name changes each time that a new directory/file is added.
-				    ; So it has to be printed each time to know it. 
-				   )
-				 (for-each (lambda (missing-file)
-					      (install-file missing-file target-directory))
-					   list-of-files)
-				   ))))))
-!# 
-#!
-;; Block not working
-    (build-system gnu-build-system)
-    (arguments
-     (list
-      #:phases
-      #~(modify-phases %standard-phases
-        (add-after 'unpack 'add-missing-files
-    		  (lambda* (#:key outputs inputs #:allow-other-keys)
-			       (let*
-				   (
-				    (file-1 (string-append (assoc-ref inputs "gnulib") "/src/gnulib/m4/codeset.m4"))
-				    (file-2 (string-append (assoc-ref inputs "gnulib") "/src/gnulib/m4/gettext.m4"))
-				    (file-3 (string-append (assoc-ref inputs "gnulib") "/src/gnulib/m4/iconv.m4"))
-				    (file-4 (string-append (assoc-ref inputs "gnulib") "/src/gnulib/m4/lcmessage.m4"))
-				    (file-5 (string-append (assoc-ref inputs "gnulib") "/src/gnulib/m4/progtest.m4"))
-				    (list-of-files (list file-1 file-2 file-3 file-4 file-5))
-				    ;(target-directory (string-append (assoc-ref outputs "out") "/m4"))
-				    (target-directory  (string-append (assoc-ref outputs "out")"/m4"))
-				    )
-				    ; WARNING : For debugging, the /gnu/store hash in the name changes each time that a new directory/file is added.
-				    ; So it has to be printed each time to know it. 
-				   )
-				 (for-each (lambda (missing-file)
-					      (install-file missing-file target-directory))
-					   list-of-files)
-				   )))))
-!#
-
+ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;; DEFINING A FEW MISSING FILES MANUALLY BY COPY/PASTING THEIR CONTENT;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -179,6 +104,34 @@ AC_DEFUN([AM_LANGINFO_CODESET],
 ;;;;;;;;;;;;;;;;;;; END OF FILES CONTENT DEFINITION  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#!
+           (lambda _
+	     (let (
+		   (script (string-append "./" "autogen.sh"))
+		  )
+              (setenv "NOCONFIGURE" "true")
+              (format #t "running '~a'~%" script)
+              (if (executable-file? script)
+		  ; If yes
+                  (begin
+                    (patch-shebang script)
+
+                     ;(substitute* "autogen.sh"
+                     ;  (("autoconf") (string-append "autoconf" "&&" "echo haha")))
+		    
+                    (invoke script))
+		  ; Else
+                  (invoke "sh" script))
+              ;; Let's clean up after ourselves.
+              (unsetenv "NOCONFIGURE"))
+	     )
+!#
+#!
+;(map match:substring (list-matches "[-\\.a-z0-9]+" "/gnu/store/lk1var2z867snzvwccrx0qprq4w53i34-my-gnokii-0.6.31-builder"))
+; return a list of matches :
+; (map match:substring (list-matches "[-\\.a-z0-9]+" "/gnu/store/lk1var2z867snzvwccrx0qprq4w53i34-my-gnokii-0.6.31-builder"))
+!#
+		 
 (define-public my-gnokii
   (package
     (name "my-gnokii")
@@ -201,30 +154,30 @@ AC_DEFUN([AM_LANGINFO_CODESET],
                 ))))
     
     (build-system gnu-build-system)
-;    (arguments '())
-;#!
-;    # It is after unpack, but cannot be before bootstrap - so within it.
+
+    ;; It is after unpack, but cannot be before bootstrap - so within it.
     (arguments
-      (list
+     (list
+      #:modules
+	`((ice-9 regex) ; for the 'match:substring' procedure 
+         ,@%gnu-build-system-modules)
+	    ;(guix build utils) (guix build-system gnu))
+         ;(guix build font-build-system))
        #:phases
-       #~(modify-phases %standard-phases
-
-
-
-
-
-			
-    (replace 'bootstrap
+       #~(modify-phases %standard-phases		
+        (replace 'bootstrap
 	 
         (lambda* (#:key inputs #:allow-other-keys)
 		 (let* (
 			(script "./autogen.sh")
 			(sh-path (which "sh"))
-			(clean-sh-path (
+			(list-of-path-parts (list (map match:substring (list-matches "[-\\.a-z0-9]+" "a-bc/42/def/78"))))
+			;(clean-sh-path ((string-split char-whitespace? (which "sh")) 0))
 		       )
                 (substitute* '("autogen.sh")
 			    ;(("autoconf") (string-append "autoconf" "&&" "echo haha")) ; working
 			    ; (("autoconf") (string-append "autoconf" " "))
+			     ; "\\/gnu\\store\\
 			    (("autoconf") (string-append "autoconf && sed -i 's/\\/bin\\/sh/" sh-path "/g' configure"))
 			     )
 		(patch-shebang script)
@@ -234,30 +187,7 @@ AC_DEFUN([AM_LANGINFO_CODESET],
 		    
                     (invoke script)
 		)
-	      )
-				      
-#!
-           (lambda _
-	     (let (
-		   (script (string-append "./" "autogen.sh"))
-		  )
-              (setenv "NOCONFIGURE" "true")
-              (format #t "running '~a'~%" script)
-              (if (executable-file? script)
-		  ; If yes
-                  (begin
-                    (patch-shebang script)
-
-                     ;(substitute* "autogen.sh"
-                     ;  (("autoconf") (string-append "autoconf" "&&" "echo haha")))
-		    
-                    (invoke script))
-		  ; Else
-                  (invoke "sh" script))
-              ;; Let's clean up after ourselves.
-              (unsetenv "NOCONFIGURE"))
-	     )
-!#   
+	      )   
 	))))
 
     (inputs
