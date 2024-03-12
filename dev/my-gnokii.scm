@@ -210,15 +210,33 @@ AC_DEFUN([AM_LANGINFO_CODESET],
        #~(modify-phases %standard-phases
 
 
-#!
-                (call-with-output-file "Makefile.config"
-                  (lambda (port) (display "" port)))
-                (substitute* "Makefile"
-                  (("^PACKAGE_VERSION =.*")
-                   (string-append "PACKAGE_VERSION = \"" #$version "\"\n")))
-!#
+
+
+
 			
-	 (replace 'bootstrap
+    (replace 'bootstrap
+	 
+        (lambda* (#:key inputs #:allow-other-keys)
+		 (let* (
+			(script "./autogen.sh")
+			(sh-path (which "sh"))
+			(clean-sh-path (
+		       )
+                (substitute* '("autogen.sh")
+			    ;(("autoconf") (string-append "autoconf" "&&" "echo haha")) ; working
+			    ; (("autoconf") (string-append "autoconf" " "))
+			    (("autoconf") (string-append "autoconf && sed -i 's/\\/bin\\/sh/" sh-path "/g' configure"))
+			     )
+		(patch-shebang script)
+
+                     ;(substitute* "autogen.sh"
+                     ;  (("autoconf") (string-append "autoconf" "&&" "echo haha")))
+		    
+                    (invoke script)
+		)
+	      )
+				      
+#!
            (lambda _
 	     (let (
 		   (script (string-append "./" "autogen.sh"))
@@ -238,9 +256,10 @@ AC_DEFUN([AM_LANGINFO_CODESET],
                   (invoke "sh" script))
               ;; Let's clean up after ourselves.
               (unsetenv "NOCONFIGURE"))
-	   )
+	     )
+!#   
 	))))
-;!#
+
     (inputs
      (list
           autoconf ; for 'autom4te'
