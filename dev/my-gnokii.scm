@@ -126,11 +126,7 @@ AC_DEFUN([AM_LANGINFO_CODESET],
               (unsetenv "NOCONFIGURE"))
 	     )
 !#
-#!
-;(map match:substring (list-matches "[-\\.a-z0-9]+" "/gnu/store/lk1var2z867snzvwccrx0qprq4w53i34-my-gnokii-0.6.31-builder"))
-; return a list of matches :
-; (map match:substring (list-matches "[-\\.a-z0-9]+" "/gnu/store/lk1var2z867snzvwccrx0qprq4w53i34-my-gnokii-0.6.31-builder"))
-!#
+
 		 
 (define-public my-gnokii
   (package
@@ -166,26 +162,34 @@ AC_DEFUN([AM_LANGINFO_CODESET],
        #:phases
        #~(modify-phases %standard-phases		
         (replace 'bootstrap
-	 
-        (lambda* (#:key inputs #:allow-other-keys)
+            (lambda* (#:key inputs #:allow-other-keys)
 		 (let* (
 			(script "./autogen.sh")
 			(sh-path (which "sh"))
-			(list-of-path-parts (list (map match:substring (list-matches "[-\\.a-z0-9]+" "a-bc/42/def/78"))))
-			;(clean-sh-path ((string-split char-whitespace? (which "sh")) 0))
-		       )
+			;; Get the list of each part of the path splitted by '/'
+			(list-of-path-parts (list (map match:substring (list-matches "[-\\.a-z0-9]+" sh-path))))
+			;; Get each part one by one
+			(part-of-path-0 (list-ref (map match:substring (list-matches "[-\\.a-z0-9]+" sh-path)) 0))
+			(part-of-path-1 (list-ref (map match:substring (list-matches "[-\\.a-z0-9]+" sh-path)) 1))
+			(part-of-path-2 (list-ref (map match:substring (list-matches "[-\\.a-z0-9]+" sh-path)) 2))
+			(part-of-path-3 (list-ref (map match:substring (list-matches "[-\\.a-z0-9]+" sh-path)) 3))
+			(part-of-path-4 (list-ref (map match:substring (list-matches "[-\\.a-z0-9]+" sh-path)) 4))
+		  )
+		;; Replacing the sheband in the configure file through the autoconf file by adding a replacement command with sed. Mandatory to be done here because before running the 'autogen.sh' script, the file 'configure' does not exist.
                 (substitute* '("autogen.sh")
-			    ;(("autoconf") (string-append "autoconf" "&&" "echo haha")) ; working
-			    ; (("autoconf") (string-append "autoconf" " "))
-			     ; "\\/gnu\\store\\
-			    (("autoconf") (string-append "autoconf && sed -i 's/\\/bin\\/sh/" sh-path "/g' configure"))
+			     (("autoconf")
+			      (string-append "autoconf && sed -i 's/\\/bin\\/sh/"
+				  "\\/" part-of-path-0
+				  "\\/" part-of-path-1
+				  "\\/" part-of-path-2
+				  "\\/" part-of-path-3
+				  "\\/" part-of-path-4
+				  "/g' configure")) ; working
 			     )
-		(patch-shebang script)
-
-                     ;(substitute* "autogen.sh"
-                     ;  (("autoconf") (string-append "autoconf" "&&" "echo haha")))
-		    
-                    (invoke script)
+		 (patch-shebang script)		    
+		 (invoke script)
+	         ;; Let's clean up after ourselves.
+                 (unsetenv "NOCONFIGURE") ; This line was in the 'bootstrap' definition so left it.
 		)
 	      )   
 	))))
