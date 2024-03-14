@@ -1,3 +1,10 @@
+;; This package definition is not working - has to be debugged but as it was no needed anymore, I left it that way.
+
+;; I can inspire from some part of the package to write others.
+;; For example,
+;; the custom 'meson' builder package as well as
+;; the custom patch through a text file. 
+
 (define-module (my-packages my-glib2)
   #:use-module (gnu packages) ; for 'search-patches
   #:use-module (gnu packages autotools)
