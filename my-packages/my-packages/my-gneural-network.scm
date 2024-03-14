@@ -32,4 +32,4 @@
     (license license:gpl3)))
 
 
-my-gneural-network  ;; Uncomment this line during development tests. Comment it when finished.
+;;my-gneural-network  ;; Uncomment this line during development tests. Comment it when finished.
