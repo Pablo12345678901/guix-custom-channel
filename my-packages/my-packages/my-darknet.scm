@@ -87,7 +87,7 @@
     (home-page "https://darknetcv.ai/")
     (license license:asl2.0))))
 
-my-darknet ; Uncomment this line during development tests. Comment it when finished.
+;my-darknet ; Uncomment this line during development tests. Comment it when finished.
 
 
 #!
