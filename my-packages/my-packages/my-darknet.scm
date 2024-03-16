@@ -130,7 +130,6 @@ Makefile
 
 
 
-!#
 #!
 (modify-phases %standard-phases
          (replace 'install
