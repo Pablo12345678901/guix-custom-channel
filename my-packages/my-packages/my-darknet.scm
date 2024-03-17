@@ -41,7 +41,18 @@
 		      (string-append "SET (DARKNET_VERSION_STRING " #+version ")\n")))
 	            ;; Change the directory of installation of 'cfg' files as '/opt/...' path is not available on Guix.    
 		    (substitute* '("cfg/CMakeLists.txt")
-		     (("\\/opt\\/darknet\\/cfg\\/") cfg-dir)))))	       
+				 (("\\/opt\\/darknet\\/cfg\\/") cfg-dir)))))
+	   ;; Copy the 'cfg' and 'artwork' directories content within the package directory.
+	   (add-before 'configure 'copy-some-dirs
+	       (lambda* (#:key outputs #:allow-other-keys)
+			(let* ((old-artwork-dir "artwork/")
+			       (new-artwork-dir (string-append (assoc-ref outputs "out") "/artwork"))
+			       (old-cfg-dir "cfg/")
+		               (new-cfg-dir (string-append (assoc-ref outputs "out") "/cfg")))
+		      (mkdir-p new-artwork-dir)
+		      (copy-recursively old-artwork-dir new-artwork-dir)
+		      (mkdir-p new-cfg-dir)
+		      (copy-recursively old-cfg-dir new-cfg-dir))))
 	   ;; Copy the cpp files within the package directory because they are required for the library on the which is based the binary.
 	   (add-before 'build 'copy-cpp-files
 	       (lambda* (#:key outputs #:allow-other-keys)
@@ -59,6 +70,7 @@
 	   ;; No tests available for this package.
 	   (delete 'check)
 	   )))
+           ; End of modifying phases
     (inputs
      (list
       opencv
