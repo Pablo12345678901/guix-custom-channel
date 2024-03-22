@@ -21,8 +21,9 @@
         (base32 "1f3p5yvw3knn5s99jlb1xb4k0i4m19gs9mnlqazjqzd7j7vl2ijw"))))
     (build-system node-build-system)
 
-    (arguments '())
-#!
+    ;;(arguments '()) ; Let this line while development.
+;#!
+    (arguments
     ;; Patch for the issue about the dependencies :
     ;; ...
     ;; starting phase `configure'
@@ -32,9 +33,13 @@
      (list
        #:phases
        #~(modify-phases %standard-phases
-        ;;PLACE MODIFED PHASES HERE
+	;; Add verbose option for debug
+	(replace 'configure			 
+	    (lambda* (#:key outputs inputs #:allow-other-keys)
+	      (let* ((npm (string-append (assoc-ref inputs "node") "/bin/npm")))			
+        (invoke npm "--offline" "--ignore-scripts" "--install-links" "-verbose" "install"))))		
 	)))
-!#
+;!#
     (native-inputs '())
     (inputs '())
     (propagated-inputs '())
@@ -44,34 +49,6 @@
     (license license:gpl3)))
 
 my-bitwarden ;; Uncomment this line while developping / Re-comment it after.
-
-#!
-	 ;; All dependencies causes issues... The devDependencies as well as the dependencies. If all dependencies with 'angular' are removed, the next one (by alphabetic order) causes issue : '@compodoc/compodoc'.
-         (add-after 'patch-dependencies 'delete-custom-dependencies
-	       (lambda _ 
-		 (let* ((absent (list
-				;; From devDependencies
-				"@angular-devkit/build-angular"
-		                "@angular-eslint/eslint-plugin"
-		                "@angular-eslint/eslint-plugin-template"
-		                "@angular-eslint/template-parser"
-		                "@angular/cli"
-		                "@angular/compiler-cli"
-                                "@angular/elements"
-                                 ;; From dependencies
-				 "@angular/animations"
-		                 "@angular/cdk"
-		                 "@angular/common"
-		                 "@angular/compiler"
-		                 "@angular/core"
-		                 "@angular/forms"
-		                 "@angular/platform-browser"
-		                 "@angular/platform-browser-dynamic"
-		                 "@angular/router"
-				 )))
-		 (delete-dependencies absent)
-		 )))
-!#
 
 #!
 ; Content of package.json
@@ -129,7 +106,6 @@ my-bitwarden ;; Uncomment this line while developping / Re-comment it after.
 		 "zone.js":"0.13.3",
 		 "zxcvbn":"4.4.2"
 	     },
-
  "devDependencies":{
 		    "@angular-devkit\/build-angular":"16.2.11",
 		    "@angular-eslint\/eslint-plugin":"16.3.1",
@@ -244,9 +220,73 @@ my-bitwarden ;; Uncomment this line while developping / Re-comment it after.
 		    "webpack-cli":"5.1.4",
 		    "webpack-dev-server":"4.15.1",
 		    "webpack-node-externals":"3.0.0"
-		},
+		}, 
  "name":"@bitwarden\/clients",
  "version":"0.0.0",
  "description":"Bitwarden Client Applications",
- "repository":{"type":"git","url":"git+https:\/\/github.com\/bitwarden\/clients.git"},"author":"Bitwarden Inc. <hello@bitwarden.com> (https:\/\/bitwarden.com)","license":"GPL-3.0","bugs":{"url":"https:\/\/github.com\/bitwarden\/clients\/issues"},"homepage":"https:\/\/bitwarden.com","scripts":{"prepare":"husky","lint":"eslint . --cache --cache-strategy content && prettier --check .","lint:fix":"eslint . --cache --cache-strategy content --fix","lint:clear":"rimraf .eslintcache","prettier":"prettier --cache --write .","test":"jest","test:watch":"jest --clearCache && jest --watch","test:watch:all":"jest --watchAll","test:types":"node .\/scripts\/test-types.js","docs:json":"compodoc -p .\/tsconfig.json -e json -d .","storybook":"ng run components:storybook","build-storybook":"ng run components:build-storybook","build-storybook:ci":"ng run components:build-storybook --webpack-stats-json","postinstall":"patch-package"},"workspaces":["apps\/*","apps\/desktop\/desktop_native","libs\/*"],"overrides":{"tailwindcss":"$tailwindcss","@storybook\/angular":{"zone.js":"$zone.js"},"replacestream":"4.0.3"},"resolutions":{"@types\/react":"16.14.54"},"lint-staged":{"*":"prettier --cache --ignore-unknown --write","*.ts":"eslint --cache --cache-strategy content --fix"},"engines":{"node":"~18","npm":"~9"}}
+ "repository":{
+	       "type":"git",
+	       "url":"git+https:\/\/github.com\/bitwarden\/clients.git"
+	       },
+ "author":"Bitwarden Inc. <hello@bitwarden.com> (https:\/\/bitwarden.com)",
+ "license":"GPL-3.0",
+ "bugs":{"url":"https:\/\/github.com\/bitwarden\/clients\/issues"},
+ "homepage":"https:\/\/bitwarden.com",
+ "scripts":{
+	    "prepare":"husky",
+	    "lint":"eslint . --cache --cache-strategy content && prettier --check .",
+	    "lint:fix":"eslint . --cache --cache-strategy content --fix",
+	    "lint:clear":"rimraf .eslintcache",
+	    "prettier":"prettier --cache --write .",
+	    "test":"jest",
+	    "test:watch":"jest --clearCache && jest --watch",
+	    "test:watch:all":"jest --watchAll",
+	    "test:types":"node .\/scripts\/test-types.js",
+	    "docs:json":"compodoc -p .\/tsconfig.json -e json -d .",
+	    "storybook":"ng run components:storybook",
+	    "build-storybook":"ng run components:build-storybook",
+	    "build-storybook:ci":"ng run components:build-storybook --webpack-stats-json",
+	    "postinstall":"patch-package"
+	    },
+ "workspaces":["apps\/*","apps\/desktop\/desktop_native","libs\/*"],
+ "overrides":{
+	      "tailwindcss":"$tailwindcss",
+	      "@storybook\/angular":{"zone.js":"$zone.js"},
+	      "replacestream":"4.0.3"
+	      },
+ "resolutions":{"@types\/react":"16.14.54"},
+ "lint-staged":{
+		"*":"prettier --cache --ignore-unknown --write",
+		"*.ts":"eslint --cache --cache-strategy content --fix"
+		},
+ "engines":{"node":"~18","npm":"~9"}
+ }
+!#
+
+#!
+;; All dependencies causes issues... The devDependencies as well as the dependencies. If all dependencies with 'angular' are removed, the next one (by alphabetic order) causes issue : '@compodoc/compodoc'.
+         (add-after 'patch-dependencies 'delete-custom-dependencies
+	       (lambda _ 
+		 (let* ((absent (list
+				;; From devDependencies
+				"@angular-devkit/build-angular"
+		                "@angular-eslint/eslint-plugin"
+		                "@angular-eslint/eslint-plugin-template"
+		                "@angular-eslint/template-parser"
+		                "@angular/cli"
+		                "@angular/compiler-cli"
+                                "@angular/elements"
+                                 ;; From dependencies
+				 "@angular/animations"
+		                 "@angular/cdk"
+		                 "@angular/common"
+		                 "@angular/compiler"
+		                 "@angular/core"
+		                 "@angular/forms"
+		                 "@angular/platform-browser"
+		                 "@angular/platform-browser-dynamic"
+		                 "@angular/router"
+				 )))
+		 (delete-dependencies absent)
+		 )))
 !#
