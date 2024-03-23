@@ -8,7 +8,7 @@
 (define-public my-dpkg
   (package
     (inherit dpkg)
-    (name "dpkg")
+    (name "my-dpkg")
     (version "1.22.1")
     (source
      (origin
