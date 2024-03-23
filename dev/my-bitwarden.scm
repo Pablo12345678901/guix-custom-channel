@@ -6,6 +6,13 @@
   #:use-module (guix packages)
 )
 
+#!
+;; ERROR MESSAGE :
+starting phase `configure'
+npm ERR! code ENOTCACHED
+npm ERR! request to https://registry.npmjs.org/@angular-devkit%2fbuild-angular failed: cache mode is 'only-if-cached' but no cached response is available.
+!#
+
 (define-public my-bitwarden
   (package
     (name "bitwarden-client")
@@ -37,7 +44,7 @@
 	(replace 'configure			 
 	    (lambda* (#:key outputs inputs #:allow-other-keys)
 	      (let* ((npm (string-append (assoc-ref inputs "node") "/bin/npm")))			
-        (invoke npm "--offline" "--ignore-scripts" "--install-links" "-verbose" "install"))))		
+        (invoke npm "--offline" "--ignore-scripts" "--install-links" "install"))))		
 	)))
 ;!#
     (native-inputs '())
