@@ -240,34 +240,3 @@ my-bitwarden ;; Uncomment this line while developping / Re-comment it after.
  "engines":{"node":"~18","npm":"~9"}
  }
 !#
-
-
-#!
-        ;; Add a custom phase to debug network access
-        (add-before 'unpack 'debug-network-access
-          (lambda* (#:key inputs outputs #:allow-other-keys)
-            (let* ((url "https://www.gnu.org/")  ; Replace with a known URL
-                   (curl (string-append (assoc-ref inputs "curl") "/bin/curl"))) ; Path to binary
-              (format #t "Testing network access before unpack phase...~%")
-              (if (zero? (system* curl "--head" "--silent" "--fail" url))
-                  (format #t "Network access before unpack phase: SUCCESS~%")
-                  (format #t "Network access before unpack phase: FAILURE~%"))
-              #t))))))
-
-    (inputs
-`(("curl" ,curl))) ; Ensure 'curl' is available for testing network access
-!#
-
-#!
-     (list
-       #:phases
-        #~(modify-phases %standard-phases
-			 ;; Add a custom phase to debug network access
-
-			         (add-before 'configure 'enable-network-access
-           (lambda* (#:key inputs outputs #:allow-other-keys)
-             (let ((network-dir (string-append (assoc-ref inputs "network-files") "/network")))
-               (mkdir-p network-dir)
-               (mount #f network-dir "/etc/network" "-o" "bind")
-               #t)))))
-!#
