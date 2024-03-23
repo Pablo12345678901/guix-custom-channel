@@ -6,13 +6,6 @@
   #:use-module (guix packages)
 )
 
-#!
-;; ERROR MESSAGE :
-starting phase `configure'
-npm ERR! code ENOTCACHED
-npm ERR! request to https://registry.npmjs.org/@angular-devkit%2fbuild-angular failed: cache mode is 'only-if-cached' but no cached response is available.
-!#
-
 (define-public my-bitwarden
   (package
     (name "bitwarden-client")
@@ -27,29 +20,7 @@ npm ERR! request to https://registry.npmjs.org/@angular-devkit%2fbuild-angular f
        (sha256
         (base32 "1f3p5yvw3knn5s99jlb1xb4k0i4m19gs9mnlqazjqzd7j7vl2ijw"))))
     (build-system node-build-system)
-
-    ;;(arguments '()) ; Let this line while development.
-;#!
-    (arguments
-    ;; Patch for the issue about the dependencies :
-    ;; ...
-    ;; starting phase `configure'
-    ;; npm ERR! code ENOTCACHED
-    ;; npm ERR! request to https://registry.npmjs.org/@angular-devkit%2fbuild-angular failed: cache mode is 'only-if-cached' but no cached response is available.
-    ;; ...
-     (list
-       #:phases
-       #~(modify-phases %standard-phases
-	;; Add verbose option for debug
-	(replace 'configure			 
-	    (lambda* (#:key outputs inputs #:allow-other-keys)
-	      (let* ((npm (string-append (assoc-ref inputs "node") "/bin/npm")))			
-        (invoke npm "--offline" "--ignore-scripts" "--install-links" "install"))))		
-	)))
-;!#
-    (native-inputs '())
-    (inputs '())
-    (propagated-inputs '())
+    (arguments '())
     (home-page "https://bitwarden.com/")
     (synopsis "Bitwarden client applications (web, browser extension, desktop, and cli)")
     (description "Bitwarden client applications (web, browser extension, desktop, and cli)")
@@ -270,30 +241,33 @@ my-bitwarden ;; Uncomment this line while developping / Re-comment it after.
  }
 !#
 
+
 #!
-;; All dependencies causes issues... The devDependencies as well as the dependencies. If all dependencies with 'angular' are removed, the next one (by alphabetic order) causes issue : '@compodoc/compodoc'.
-         (add-after 'patch-dependencies 'delete-custom-dependencies
-	       (lambda _ 
-		 (let* ((absent (list
-				;; From devDependencies
-				"@angular-devkit/build-angular"
-		                "@angular-eslint/eslint-plugin"
-		                "@angular-eslint/eslint-plugin-template"
-		                "@angular-eslint/template-parser"
-		                "@angular/cli"
-		                "@angular/compiler-cli"
-                                "@angular/elements"
-                                 ;; From dependencies
-				 "@angular/animations"
-		                 "@angular/cdk"
-		                 "@angular/common"
-		                 "@angular/compiler"
-		                 "@angular/core"
-		                 "@angular/forms"
-		                 "@angular/platform-browser"
-		                 "@angular/platform-browser-dynamic"
-		                 "@angular/router"
-				 )))
-		 (delete-dependencies absent)
-		 )))
+        ;; Add a custom phase to debug network access
+        (add-before 'unpack 'debug-network-access
+          (lambda* (#:key inputs outputs #:allow-other-keys)
+            (let* ((url "https://www.gnu.org/")  ; Replace with a known URL
+                   (curl (string-append (assoc-ref inputs "curl") "/bin/curl"))) ; Path to binary
+              (format #t "Testing network access before unpack phase...~%")
+              (if (zero? (system* curl "--head" "--silent" "--fail" url))
+                  (format #t "Network access before unpack phase: SUCCESS~%")
+                  (format #t "Network access before unpack phase: FAILURE~%"))
+              #t))))))
+
+    (inputs
+`(("curl" ,curl))) ; Ensure 'curl' is available for testing network access
+!#
+
+#!
+     (list
+       #:phases
+        #~(modify-phases %standard-phases
+			 ;; Add a custom phase to debug network access
+
+			         (add-before 'configure 'enable-network-access
+           (lambda* (#:key inputs outputs #:allow-other-keys)
+             (let ((network-dir (string-append (assoc-ref inputs "network-files") "/network")))
+               (mkdir-p network-dir)
+               (mount #f network-dir "/etc/network" "-o" "bind")
+               #t)))))
 !#
