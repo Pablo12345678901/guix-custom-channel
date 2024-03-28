@@ -110,4 +110,4 @@
              "17xrvzllbcrprxn6c0g4x25i2wa7yqa0ycv177wah3if9s30dgib"))))))
     ))
 
-my-opencv ;; Uncomment this line during tests. Re-comment after.
+;; my-opencv ;; Uncomment this line during tests. Re-comment after.
