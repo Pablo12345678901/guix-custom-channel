@@ -1932,6 +1932,25 @@
     (description "HTTP methods that node supports")
     (license license:expat)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;; BEGINNING - DEBUG REMARKS ;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; DEBUG : the issue comes from this package.
+;; During the 'configure' phase, somewhat, the 'ts-scripts' command is called but not from the phase that instead call the command :
+#!
+(define* (configure #:key outputs inputs #:allow-other-keys)
+  (let ((npm (string-append (assoc-ref inputs "node") "/bin/npm")))
+    (invoke npm "--offline" "--ignore-scripts" "--install-links" "install")
+    #t))
+!#
+;; What does this command and why is it calling 'ts-scripts'.
+;; Should I import (guix import npm-binary -r ...) the package 'node-borderless-ts-scripts' and add it to inputs of this package ?
+;; Is there a way to workaround without using 'ts-scripts' ?
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;; END - DEBUG REMARKS ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (define-public node-path-to-regexp
   (package
     (name "node-path-to-regexp")
@@ -1940,25 +1959,25 @@
      (origin
        (method url-fetch)
        (uri
-        "https://registry.npmjs.org/path-to-regexp/-/path-to-regexp-6.2.2.tgz")
+	"https://registry.npmjs.org/path-to-regexp/-/path-to-regexp-6.2.2.tgz")
        (sha256
-        (base32 "04llmkn2spqypixmbsv8sklghg5nq2ixcrrqx5mlkq89id26gwfi"))))
+	(base32 "04llmkn2spqypixmbsv8sklghg5nq2ixcrrqx5mlkq89id26gwfi"))))
     (build-system node-build-system)
     (arguments
      (list
       #:tests? #f
       #:phases #~(modify-phases %standard-phases
-                   (delete 'build)
-                   (add-after 'patch-dependencies 'delete-dev-dependencies
-                     (lambda _
-                       (delete-dependencies '("@borderless/ts-scripts"
-                                              "@size-limit/preset-small-lib"
-                                              "@types/node"
-                                              "@types/semver"
-                                              "@vitest/coverage-v8"
-                                              "semver"
-                                              "size-limit"
-                                              "typescript")))))))
+		   (delete 'build)
+		   (add-after 'patch-dependencies 'delete-dev-dependencies
+		     (lambda _
+		       (delete-dependencies '("@borderless/ts-scripts"
+					      "@size-limit/preset-small-lib"
+					      "@types/node"
+					      "@types/semver"
+					      "@vitest/coverage-v8"
+					      "semver"
+					      "size-limit"
+					      "typescript")))))))   
     (home-page "https://github.com/pillarjs/path-to-regexp#readme")
     (synopsis "Express style path to RegExp utility")
     (description "Express style path to RegExp utility")
@@ -1966,57 +1985,56 @@
 
 (define-public node-koa-router
   (package
-    (name "node-koa-router")
-    (version "12.0.1")
-    (source
-     (origin
-       (method url-fetch)
-       (uri "https://registry.npmjs.org/@koa/router/-/router-12.0.1.tgz")
-       (sha256
-        (base32 "07bmr8ayix7n5cnvjszx3dvqq3768sqfd4b66iljsck9y0i71g5b"))))
-    (build-system node-build-system)
-    (arguments
-     (list
-      #:tests? #f
-      #:phases #~(modify-phases %standard-phases
-                   (delete 'build)
-                   (add-after 'patch-dependencies 'delete-dev-dependencies
-                     (lambda _
-                       (delete-dependencies '("@commitlint/cli"
-                                              "@commitlint/config-conventional"
-                                              "@ladjs/env"
-                                              "ava"
-                                              "cross-env"
-                                              "eslint"
-                                              "eslint-config-xo-lass"
-                                              "expect.js"
-                                              "fixpack"
-                                              "husky"
-                                              "jsdoc-to-markdown"
-                                              "koa"
-                                              "lint-staged"
-                                              "mocha"
-                                              "nyc"
-                                              "remark-cli"
-                                              "remark-preset-github"
-                                              "should"
-                                              "supertest"
-                                              "wrk"
-                                              "xo")))))))
-    (inputs (list node-path-to-regexp ;-6.2.2
- node-methods ;-1.1.2
-
-                  node-koa-compose ;-4.2.0
- node-http-errors ;-2.0.0
-
-                  node-debug ;-4.3.4
-))
-    (home-page "https://github.com/koajs/router")
-    (synopsis
-     "Router middleware for koa. Maintained by Forward Email and Lad.")
-    (description
-     "Router middleware for koa. Maintained by Forward Email and Lad.")
-    (license license:expat)))
+   (name "node-koa-router")
+   (version "12.0.1")
+   (source
+    (origin
+     (method url-fetch)
+     (uri "https://registry.npmjs.org/@koa/router/-/router-12.0.1.tgz")
+     (sha256
+      (base32 "07bmr8ayix7n5cnvjszx3dvqq3768sqfd4b66iljsck9y0i71g5b"))))
+   (build-system node-build-system)
+   (arguments
+    (list
+     #:tests? #f
+     #:phases #~(modify-phases %standard-phases
+			       (delete 'build)
+			       (add-after 'patch-dependencies 'delete-dev-dependencies
+					  (lambda _
+					    (delete-dependencies '("@commitlint/cli"
+								   "@commitlint/config-conventional"
+								   "@ladjs/env"
+								   "ava"
+								   "cross-env"
+								   "eslint"
+								   "eslint-config-xo-lass"
+								   "expect.js"
+								   "fixpack"
+								   "husky"
+								   "jsdoc-to-markdown"
+								   "koa"
+								   "lint-staged"
+								   "mocha"
+								   "nyc"
+								   "remark-cli"
+								   "remark-preset-github"
+								   "should"
+								   "supertest"
+								   "wrk"
+								   "xo")))))))
+   (inputs (list 
+		 node-path-to-regexp	;-6.2.2
+		 node-methods		;-1.1.2
+                 node-koa-compose	;-4.2.0
+		 node-http-errors	;-2.0.0
+                 node-debug		;-4.3.4
+		 ))
+   (home-page "https://github.com/koajs/router")
+   (synopsis
+    "Router middleware for koa. Maintained by Forward Email and Lad.")
+   (description
+    "Router middleware for koa. Maintained by Forward Email and Lad.")
+   (license license:expat)))
 
 (define-public node-phc-format
   (package
@@ -5278,12 +5296,6 @@
 								   "ts-jest"
 								   "typedoc"
 								   "typescript")))))))
-   ;; DEBUG during the build, complain that neither 'git' nor 'tsc' (typescript) is installed so had to add them manually.
-   ;; + defined node-typescript just above this package as it was not here.
-   (inputs (list
-	    git
-	    node-typescript
-	    ))
    (home-page "https://github.com/fb55/entities#readme")
    (synopsis "Encode & decode XML and HTML entities with ease & speed")
    (description "Encode & decode XML and HTML entities with ease & speed")
@@ -5306,6 +5318,9 @@
       #:phases #~(modify-phases %standard-phases
                    (delete 'build))))
     (inputs (list node-entities ;-4.5.0
+		  ;; DEBUG : add those two dependencies below because else, during the build of node-entitites, complain about 'git' and 'tsc' command not found.
+		 ; git
+		 node-typescript
 ))
     (home-page "https://github.com/inikulin/parse5")
     (synopsis "HTML parser and serializer.")
