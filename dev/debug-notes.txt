@@ -1,0 +1,22 @@
+###################################
+npm ERR! code 127
+npm ERR! path /gnu/store/wmr2dxnl0ddnmwiyiknw17wakl4bcdf1-node-path-to-regexp-6.2.2/lib/node_modules/path-to-regexp
+npm ERR! command failed
+npm ERR! command sh -c ts-scripts install && npm run build
+npm ERR! sh: line 1: ts-scripts: command not found
+npm verb exit 127
+###################################
+
+The issue comes from the build of package 'node-path-to-regexp'.
+
+This issue should not appear because the command is within the 'scripts' field of the 'package.json' of the 'node-path-to-regexp' package.
+
+If built directly with 'guix build -f node-path-to-regexp.scm', built successfully.
+If built indirectly as a dependency, built fail (for example with 'guix build -f node-koa-router.scm').
+
+I tried to build another package ('guix build -f node-ampproject-remapping.scm') with dependencies to see if the issue was coming from the 'node-build-system' but it is not the case.
+
+I compared the package.json from the two builds (by running 'guix gc' between them to ensure the build is re-done as they are the same.
+
+It seems that even if 'npm' was passed the flag '--ignore-scripts', it does not ignore the scripts of the dependencies while installing them.
+
