@@ -1978,8 +1978,9 @@
 					      "semver"
 					      "size-limit"
                                               "typescript"))))
-		      ;; Removal of the 'scripts' field because it causes issue when this package is imported within the inputs of other packages.
-		      (add-after 'delete-dev-dependencies 'delete-scripts
+		   ;; DEBUG - I had to add a phase here.
+		   ;; Removal of the 'scripts' field because it causes issue when this package is imported within the inputs of other packages.
+		   (add-after 'delete-dev-dependencies 'delete-scripts
 		              (lambda* (#:key inputs #:allow-other-keys)
 				(let* ((dummy-unsed-variable "dummy-value-not-used"))
 				  (substitute* '("package.json")
@@ -5327,8 +5328,8 @@
                    (delete 'build))))
     (inputs (list node-entities ;-4.5.0
 		  ;; DEBUG : add those two dependencies below because else, during the build of node-entitites, complain about 'git' and 'tsc' command not found.
-		 ; git
-		 node-typescript
+		 ;;git
+		 ;;node-typescript
 ))
     (home-page "https://github.com/inikulin/parse5")
     (synopsis "HTML parser and serializer.")

@@ -96,6 +96,47 @@ rc-ts-scripts             | Configuration and…   | =yanxlg         | 2019-06-2
 react-scripts-ts-build-op | Configuration and…   | =felixnielsen   | 2018-09-25 | 
 timised 
 
-#######################################################################
+#######################################################################w
 
-Tried to import recursively another 'ts-scripts' package to test if MAYBE they are equivalent, with the command : './pre-inst-env guix import npm-binary -r "@xylabs/ts-scripts" "3.9.0"'.
+Removed the 'scripts' field from the 'node-path-to-regex' package.json file and its worked.
+
+#######################################################################w
+
+Now, bitwarden build is facing a new issue :
+with the build of 'node-entities-4.5.0' as dependency of 'node-parse5'.
+This is the error message :
+
+starting phase `configure'
+npm ERR! code 1
+npm ERR! path /gnu/store/mglnhpxq467byp5q02m6m31nnpqm99my-node-entities-4.5.0/lib/node_modules/entities
+npm ERR! command failed
+npm ERR! command sh -c npm run build
+npm ERR! > entities@4.5.0 build
+npm ERR! > npm run build:cjs && npm run build:esm
+npm ERR! 
+npm ERR! 
+npm ERR! > entities@4.5.0 build:cjs
+npm ERR! > tsc --sourceRoot https://raw.githubusercontent.com/fb55/entities/$(git rev-parse HEAD)/src/
+...
+npm ERR! fatal: not a git repository (or any of the parent directories): .git
+
+#######################################################################w
+
+It is important to mention that before, this package already created issue complaining about 'git' and 'tsc' command not found.
+
+This was the error message before I added those two packages as inputs.
+
+npm ERR! command failed
+npm ERR! command sh -c npm run build
+npm ERR! > entities@4.5.0 build
+npm ERR! > npm run build:cjs && npm run build:esm
+npm ERR! 
+npm ERR! 
+npm ERR! > entities@4.5.0 build:cjs
+npm ERR! > tsc --sourceRoot https://raw.githubusercontent.com/fb55/entities/$(git rev-parse HEAD)/src/
+npm ERR! sh: line 1: git: command not found
+npm ERR! sh: line 1: tsc: command not found
+
+#######################################################################w
+
+Next step is to create a separate build for 'node-parse5' and if required, to amend the 'node-entites' package definition.
