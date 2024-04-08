@@ -1977,15 +1977,7 @@
 					      "@vitest/coverage-v8"
 					      "semver"
 					      "size-limit"
-                                              "typescript"))))
-		      ;; Removal of the 'scripts' field because it causes issue when this package is imported within the inputs of other packages.
-		      (add-after 'delete-dev-dependencies 'delete-scripts
-		              (lambda* (#:key inputs #:allow-other-keys)
-				(let* ((dummy-unsed-variable "dummy-value-not-used"))
-				  (substitute* '("package.json")
-					       (("\"scripts\":\\{\"build\":\"ts-scripts build\",\"format\":\"ts-scripts format\",\"lint\":\"ts-scripts lint\",\"prepare\":\"ts-scripts install && npm run build\",\"size\":\"size-limit\",\"specs\":\"ts-scripts specs\",\"test\":\"ts-scripts test && npm run size\"\\},")
-						"" ; replaced by nothing = removed
-						))))))))
+					      "typescript")))))))   
     (home-page "https://github.com/pillarjs/path-to-regexp#readme")
     (synopsis "Express style path to RegExp utility")
     (description "Express style path to RegExp utility")
