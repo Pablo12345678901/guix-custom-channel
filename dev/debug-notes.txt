@@ -1,13 +1,17 @@
 ###################################
+
 npm ERR! code 127
 npm ERR! path /gnu/store/wmr2dxnl0ddnmwiyiknw17wakl4bcdf1-node-path-to-regexp-6.2.2/lib/node_modules/path-to-regexp
 npm ERR! command failed
 npm ERR! command sh -c ts-scripts install && npm run build
 npm ERR! sh: line 1: ts-scripts: command not found
 npm verb exit 127
+
 ###################################
 
 The issue comes from the build of package 'node-path-to-regexp'.
+
+The 'ts-scripts' command is within the devDependencies of the package '@koa/router' version '6.2.2' so it should not be needed.
 
 This issue should not appear because the command is within the 'scripts' field of the 'package.json' of the 'node-path-to-regexp' package.
 
@@ -20,3 +24,78 @@ I compared the package.json from the two builds (by running 'guix gc' between th
 
 It seems that even if 'npm' was passed the flag '--ignore-scripts', it does not ignore the scripts of the dependencies while installing them.
 
+#####################################################################
+
+When trying to import the package (listed in the Devdependencies of 'node-path-to-regexp') containing the command 'ts-scripts' with the command './pre-inst-env guix import npm-binary -r "@borderless/ts-scripts" "0.15.0"', an error occurs :
+
+#####################################################################
+
+Backtrace:
+In ice-9/boot-9.scm:
+  1752:10 18 (with-exception-handler _ _ #:unwind? _ #:unwind-for-type _)
+In unknown file:
+          17 (apply-smob/0 #<thunk 7fa3eff112a0>)
+In ice-9/boot-9.scm:
+    724:2 16 (call-with-prompt _ _ #<procedure default-prompt-handler (k …>)
+In ice-9/eval.scm:
+    619:8 15 (_ #(#(#<directory (guile-user) 7fa3eff16c80>)))
+In guix/ui.scm:
+   2326:7 14 (run-guix . _)
+  2289:10 13 (run-guix-command _ . _)
+In ice-9/eval.scm:
+   293:34 12 (_ #(#(#<directory (guix scripts import) 7fa3eb486500>) "…" …))
+   293:34 11 (_ #(#(#(#(#(#(#(#(#<directory (guix…> …) …) …) …) …) …) …) …))
+In guix/import/utils.scm:
+    659:3 10 (recursive-import _ #:repo->guix-package _ #:guix-name _ # . #)
+   621:31  9 (topological-sort _ #<procedure 7fa3ea615360 at guix/import…> …)
+In srfi/srfi-1.scm:
+   586:17  8 (map1 (("@isaacs/cliui" "8.0.2")))
+In guix/import/utils.scm:
+   651:33  7 (lookup-node "@isaacs/cliui" "8.0.2")
+In guix/memoization.scm:
+     98:0  6 (mproc "@isaacs/cliui" #:repo->guix-package #<procedure mpr…> …)
+In unknown file:
+           5 (_ #<procedure 7fa3dfe843e0 at guix/memoization.scm:179:32 …> …)
+In ice-9/eval.scm:
+   293:34  4 (_ #(#(#(#(#(#(#(#(#<directory (guix i…>) …) …) …) …) …) …) …))
+In srfi/srfi-1.scm:
+   586:17  3 (map1 (#<<versioned-package> name: "wrap-ansi-cjs" versio…> …))
+In ice-9/eval.scm:
+   293:34  2 (_ #(#(#(#<directory (guix import npm-binary) 7fa3eca…>) …) …))
+In srfi/srfi-1.scm:
+   730:15  1 (find #<procedure 7fa3dfec57a0 at ice-9/eval.scm:333:13 (a)> _)
+   855:18  0 (any1 #<procedure 7fa3df09df30 at semver/ranges.scm:198:7 (…> …)
+
+srfi/srfi-1.scm:855:18: In procedure any1:
+In procedure cdr: Wrong type argument in position 1 (expecting pair): #f
+##################################################################
+
+List of all the ts-scripts packages obtained with the command 'npm search ts-scripts' :
+npm search ts-scripts
+NAME                      | DESCRIPTION          | AUTHOR          | DATE       | 
+ts-scripts                | Common scripts for…  | =unstubbable    | 2017-04-28 | 
+@xylabs/ts-scripts-yarn3  | TypeScript project…  | =donaldparkerxy… | 2024-04-02 |
+@xylabs/ts-scripts        | TypeScript project…  | =donaldparkerxy… | 2024-04-02 |
+@xylabs/ts-scripts-react- | TypeScript project…  | =donaldparkerxy… | 2024-04-02 |
+yarn3                     |                      |                 |            | 
+react-scripts-ts-module   | Create React apps…   | =adriankremer   | 2018-07-13 | 
+accusantiumaut            | Monorepo for…        | =willarddouglas | 2024-04-03 | 
+@spotify/web-scripts      | Build, lint, test,…  | =vinzscam…      | 2023-05-18 | 
+aperiamcum                | Monorepo for…        | =arianecremin   | 2024-04-04 | 
+@suited/react-scripts-ts  | Suited's customized… | =thomaswellsui… | 2018-09-17 | 
+get-life-storybook-ts     | This project was…    | =getlife        | 2024-04-05 | 
+orderfit-ts-api           | lightweight api…     | =m.hamiche      | 2023-10-29 | 
+sans_ui-vite              | ```bash  .  ├──…     | =sans_w         | 2023-05-25 | 
+@qfinex/react-scripts-ts  | originated from…     | =ndex           | 2020-08-11 | 
+@jpavon/react-scripts-ts  | Fork of…             | =jpavon         | 2019-03-16 | 
+react-scripts-redux-ts    | Configuration and…   | =diabelb        | 2018-02-12 | 
+react-scripts-ts-myj      | TypeScript…          | =samyj1         | 2018-12-06 | 
+react-scripts-ts-ft       | TypeScript…          | =followthrudave | 2019-08-17 | 
+react-scripts-ts-gl       | TypeScript…          | =milanpro       | 2018-11-21 | 
+rc-ts-scripts             | Configuration and…   | =yanxlg         | 2019-06-21 | 
+react-scripts-ts-build-op | Configuration and…   | =felixnielsen   | 2018-09-25 | 
+timised 
+
+#######################################################################
+
+Tried to import recursively another 'ts-scripts' package to test if MAYBE they are equivalent, with the command : './pre-inst-env guix import npm-binary -r "@xylabs/ts-scripts" "3.9.0"'.
