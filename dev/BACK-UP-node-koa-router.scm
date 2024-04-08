@@ -308,52 +308,8 @@
                                               "@vitest/coverage-v8"
                                               "semver"
                                               "size-limit"
-                                              "typescript"))))
-
-		       (add-after 'delete-dev-dependencies 'delete-scripts
-		        (lambda* (#:key inputs #:allow-other-keys)
-			  (let* (
-				 (VARNAME "VALUE")
-				 (VARNAME2 "VALUE2")
-				 )
-			    ;; Removal of the 'scripts' field because it causes issue when this package is imported within the inputs of other packages.
-			    (substitute* '("package.json")
-    			    ; WORKING		(("\"scripts\":\\{")
-			    (("\"scripts\":\\{\"build\":\"ts-scripts build\",\"format\":\"ts-scripts format\",\"lint\":\"ts-scripts lint\",\"prepare\":\"ts-scripts install && npm run build\",\"size\":\"size-limit\",\"specs\":\"ts-scripts specs\",\"test\":\"ts-scripts test && npm run size\"\\},")
-
-#!
-;; To be removed :
-"scripts":{"build":"ts-scripts build","format":"ts-scripts format","lint":"ts-scripts lint","prepare":"ts-scripts install && npm run build","size":"size-limit","specs":"ts-scripts specs","test":"ts-scripts test && npm run size"},
-!#
-
-#!
-;; My test
-\"scripts\":\\{\"build\":\"ts-scripts build\",\"format\":\"ts-scripts format\",\"lint\":\"ts-scripts lint\",\"prepare\":\"ts-scripts install && npm run build\",\"size\":\"size-limit\",\"specs\":\"ts-scripts specs\",\"test\":\"ts-scripts test && npm run size\"\\},
-!#
-                                          ""
-					  ))
-			    ;(OTHER-ACTION)		    
-			    )
-			  ))
-			)))
-#!
-;; EXAMPLE OF 'SED' REPLACEMENT PHASE
- (replace 'bootstrap
-                (lambda* (#:key inputs #:allow-other-keys)
-		 (let* (
-			(VARNAME "VALUE")
-			(VARNAME2 "VALUE2")
-			)
-                (substitute* '("FILE_PATH")
-			     (("TO-BE-REPLACED")
-			      (string-append "REPLACEMENT" "VALUE")
-			      ))
-		 (OTHER-ACTION)		    
-		)
-		 ))
-!#
-    
-(home-page "https://github.com/pillarjs/path-to-regexp#readme")
+                                              "typescript")))))))
+    (home-page "https://github.com/pillarjs/path-to-regexp#readme")
     (synopsis "Express style path to RegExp utility")
     (description "Express style path to RegExp utility")
     (license license:expat)))
