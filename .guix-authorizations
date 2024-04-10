@@ -1,9 +1,11 @@
 (authorizations
- (version 0)               ;current file format version
+ (version 1)               ;current file format version
+ ;; The key is obtained with 'gpg --list-keys'
 
- (
-  ("0D7B 6A70 BC67 2797 FB0A 76C7 97A2 37BC 430D 199D"
-   (name "Pablo ZAMORA")
-  ) ; Obtained with 'gpg --list-keys'
- )
-)
+ ;; Before 10.04.24 = lost key.
+ ;; (("0D7B 6A70 BC67 2797 FB0A 76C7 97A2 37BC 430D 199D"
+ ;;   (name "Pablo ZAMORA"))
+ 
+ ;; After 10.04.24
+ (("E5A0 BA6F 0C53 9CE8 122E 746F 4135 0A80 BBBB 6740"
+   (name "Pablo ZAMORA")))) ; As from 10.04.24
