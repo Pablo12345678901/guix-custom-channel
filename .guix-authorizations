@@ -1,5 +1,5 @@
 (authorizations
- (version 1)               ;current file format version
+ (version 0)               ;current file format version
  ;; The key is obtained with 'gpg --list-keys'
 
  ;; Before 10.04.24 = lost key.
