@@ -2,6 +2,7 @@
   #:use-module (gnu packages databases) ; for libpqxx
   ;;#:use-module (gnu packages haskell-xyz) ; for ghc-postgresql-libpq -> libpqd
   #:use-module (gnu packages pkg-config)
+  #:use-module (gnu packages databases) ; for postgresql
   #:use-module (guix build-system gnu)
   #:use-module (guix download)
   #:use-module (guix gexp) ; for #~
@@ -14,8 +15,9 @@ Build error :
 getting error kind of :
 "in function `inert_notice_processor':
 (.text+0x1b9):  undefined reference to `PQfreemem'"
-Because of librairy linking. It seems to be about liqpqxx and lpq.
+Because of librairy linking. It seems to be about lpqxx and lpq.
 See :
+- https://github.com/jtv/libpqxx -> To link your final program, make sure you link to both the C-level libpq library and the actual C++ library, libpqxx. With most Unix-style compilers, you'd do this using these options: -lpqxx -lpq
 - https://github.com/jtv/libpqxx/issues/462
 - https://stackoverflow.com/questions/27144588/undefined-reference-to-pqfinish-even-though-libraries-etc-are-included
 !#
@@ -40,19 +42,27 @@ See :
        #~(modify-phases %standard-phases
 	    ;; Changes in API (https://pqxx.org/libpqxx/)
 	    ;;pqxx::tuple was replaced by pqxx::row
-	    (add-before 'build 'patch-pqxx-new-api
+	    (add-before 'build 'patch-libpqxx-new-api
 	       (lambda* (#:key inputs #:allow-other-keys)
 		(substitute* "cgi.cpp/check_answer.cpp"
 			     (("pqxx::tuple") "pqxx::row"))
 		(substitute* "cgi.cpp/show_sql_result.cpp"
 			     (("pqxx::tuple") "pqxx::row"))
 		(substitute* "cgi.cpp/show_table_data.cpp"
-			     (("pqxx::tuple") "pqxx::row"))
-		)))))
+			     (("pqxx::tuple") "pqxx::row"))))
+#!
+	    ;; To resolve 'undefined references to "PQ" variables'
+	    (add-before 'build 'patch-libpqxx-makefile
+	       (lambda* (#:key inputs #:allow-other-keys)
+			(substitute* "Makefile"
+			     (("-lpqxx") "-lpqxx -lpq"))))
+!#	    
+		)))
     (inputs
      (list
       libpqxx
-      pkg-config))
+      pkg-config
+      postgresql))
     (synopsis "
 3 	Interactive web based tool for learning SQL by examples.")
     (description "SQLtutor consists of two modules: a database of questions and answers and a simple CGI interface for running tests. Questions are chosen at random for each session, submitted queries are checked against correct answers stored in the database. Query results differing only in column permutations are evaluated as correct. For each session queries and answers are logged and the final score is evaluated when the test is finished. SQLtutor is written in C++ with lipqxx library to connect to PostgreSQL database. SQLtutor runs on GNU/Linux.")
