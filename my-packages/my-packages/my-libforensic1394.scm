@@ -8,7 +8,7 @@
 
 ; This library is required to build inception -> See https://github.com/carmaa/inception
 
-(define-public my-libforensic1384
+(define-public my-libforensic1394
   (let ((revision "1")
     (commit "75a4e8c16c1f139380667eea1e20495b0e205528"))
   (package
