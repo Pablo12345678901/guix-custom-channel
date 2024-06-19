@@ -1,4 +1,4 @@
-(define-module (my-packages my-libforensic1384)
+(define-module (my-packages my-libforensic1394)
   #:use-module (guix build-system cmake)
   #:use-module (guix gexp) ; for #~
   #:use-module (guix git-download) ; for 'git-fetch' procedure
@@ -38,5 +38,5 @@
     (home-page "https://freddie.witherden.org/tools/libforensic1394/")
     (license license:gpl3)))) 
 
-;;my-libforensic1384 ; For development purpose
+;;my-libforensic1394 ; For development purpose
 
