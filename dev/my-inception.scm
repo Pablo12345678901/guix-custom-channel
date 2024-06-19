@@ -11,6 +11,13 @@
   #:use-module (my-packages my-libforensic1394) ; My own definition of the library build.
 )
 
+#!
+; Getting ERROR :
+; ModuleNotFoundError: No module named 'forensic1394'
+; Has to correct it from my-libforensic1394 module by adding a step as installing a python module.
+; "python3 setup.py install"
+!#
+
 (define-public my-inception
   (let ((revision "1")
    (commit "4df32316acd87b15a0aad34ba5737cae366b018a")) ; As of 240619
