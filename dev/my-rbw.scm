@@ -193,6 +193,20 @@
        (sha256
         (base32 "13812wq68kybv2vj6rpnhbl7ammlhggcb7vq68bkichzp4cscgz1"))))))
 
+
+(define-public rust-hyper-rustls-0.27 ; Required by 'reqwest'
+  (package
+   (inherit rust-hyper-rustls-0.26)
+    (name "rust-hyper-rustls")
+    (version "0.27.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "hyper-rustls" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "1xv7hl7ymfnvpmyxg6m7ipzw80k17dw0jv65chqh77bl1sjiavvk"))))))
+
 (define-public rust-is-terminal-0.4.12
   (package
    (inherit rust-is-terminal-0.4)
@@ -233,6 +247,19 @@
         (base32
          "093vs0wkm1rgyykk7fjbqp2lwizbixac1w52gv109p5r4jh0p9x7"))))))
 
+(define-public rust-mio-1.0.1 ; Required by 'tokio'
+  (package
+   (inherit rust-mio-0.8)
+    (name "rust-mio")
+    (version "1.0.1")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "mio" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "1r5g65s5acsx440m0a3pylclbrd0dqz93hg15k9crpllsdbf8sa5"))))))
+
 (define-public rust-open-5.3.0
   (package
    (inherit rust-open-5)
@@ -245,6 +272,19 @@
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
         (base32 "1cy40lf0hk8b0pwm9ix5zi53m4lqnjgviw9ylm16cwdxdazpga31"))))))
+
+(define-public rust-quinn-0.11.1 ; Required by 'reqwest'
+  (package
+   (inherit rust-quinn-0.10)
+    (name "rust-quinn")
+    (version "0.11.1")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "quinn" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "0wzf3gzs4988pb2ry24v91yk6d1vn6r5sdyrqsc1f4vql4xksklh"))))))
 
 (define-public rust-regex-1.10.5
   (package
@@ -285,6 +325,19 @@
        (sha256
         (base32 "0dva5mx1cli19adc9igc81ix4si7yiri24ayxdw8652pgnid5mn7"))))))
 
+(define-public rust-rmp-0.8.14 ; Required by 'rmpv'
+  (package
+   (inherit rust-rmp-0.8)
+    (name "rust-rmp")
+    (version "0.8.14")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "rmp" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "1i1l6dhv7vws5vp0ikakj44fk597xi59g3j6ng1q55x3dz0xg3i2"))))))
+
 (define-public rust-rmpv-1.3.0
   (package
    (inherit rust-rmpv-1)
@@ -310,6 +363,33 @@
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
         (base32 "03vkqa2ism7q56rkifyy8mns0wwqrk70f4i4fd53r97p8b05xp3h"))))))
+
+(define-public rust-rustls-0.23.4 ; Required by 'reqwest'
+  (package
+   (inherit rust-rustls-0.22)
+    (name "rust-rustls")
+    (version "0.23.4")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "rustls" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "1qagdcncvhpij720jrhv8ij8zl0x56xsqlrlw62j8jgjv656skcc"))))))
+
+(define-public rust-serde-derive-1.0.204 ; Required by 'serde'
+  (package
+   (inherit rust-serde-derive-1)
+    (name "rust-serde-derive")
+    (version "1.0.204")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "serde_derive" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32
+         "08p25262mbmhsr2cg0508d5b1wvljj956rvpg0v3qgg6gc8pxkg0"))))))
 
 (define-public rust-serde-json-1.0.120
   (package
@@ -364,6 +444,19 @@
         (base32
          "04kwpwqz559xlhxkggmm8rjxqgywy5swam3kscwsicnbw1cgaxmw"))))))
 
+(define-public rust-sync-wrapper-1.0.0 ; Required by 'axum'
+  (package
+   (inherit rust-sync-wrapper-0.1)
+    (name "rust-sync-wrapper")
+    (version "1.0.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "sync_wrapper" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "037jwlka84cxwx6yzrd9aswmlpqi5508qnmdbj4njaaf3b0rai9q"))))))
+
 (define-public rust-textwrap-0.16.1
   (package
    (inherit rust-textwrap-0.16)
@@ -390,44 +483,18 @@
        (sha256
         (base32 "092p83mf4p1vkjb2j6h6z96dan4raq2simhirjv12slbndq26d60"))))))
 
-(define-public rust-tokio-stream-0.1.15
+(define-public rust-thiserror-impl-1.0.63 ; Required by 'thiserror'
   (package
-   (inherit rust-tokio-stream-0.1)
-    (name "rust-tokio-stream")
-    (version "0.1.15")
+   (inherit rust-thiserror-impl-1)
+    (name "rust-thiserror-impl")
+    (version "1.0.63")
     (source
      (origin
        (method url-fetch)
-       (uri (crate-uri "tokio-stream" version))
+       (uri (crate-uri "thiserror-impl" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "1brpbsqyg8yfmfc4y0j9zxvc8xsxjc31d48kb0g6jvpc1fgchyi6"))))))
-
-(define-public rust-sync-wrapper-1.0.0 ; Required by 'axum'
-  (package
-   (inherit rust-sync-wrapper-0.1)
-    (name "rust-sync-wrapper")
-    (version "1.0.0")
-    (source
-     (origin
-       (method url-fetch)
-       (uri (crate-uri "sync_wrapper" version))
-       (file-name (string-append name "-" version ".tar.gz"))
-       (sha256
-        (base32 "037jwlka84cxwx6yzrd9aswmlpqi5508qnmdbj4njaaf3b0rai9q"))))))
-
-(define-public rust-tokio-tungstenite-0.23.0
-  (package
-   (inherit rust-tokio-tungstenite-0.21)
-    (name "rust-tokio-tungstenite")
-    (version "0.23.0")
-    (source
-     (origin
-       (method url-fetch)
-       (uri (crate-uri "tokio-tungstenite" version))
-       (file-name (string-append name "-" version ".tar.gz"))
-       (sha256
-        (base32 "1c10wfw22z8nn0j773mfvj9p7x90hfrl2wkwpwyimqz76fi39kdy"))))))
+        (base32 "0qd21l2jjrkvnpr5da3l3b58v4wmrkn6aa0h1z5dg6kb8rc8nmd4"))))))
 
 (define-public rust-tokio-1.39.2
   (package
@@ -441,6 +508,181 @@
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
         (base32 "1cb7yhba7nnf00cylcywk7rai5kkdb8b4jzwrc26zgbqqwdzp96s"))))))
+
+(define-public rust-tokio-macros-2.4.0 ; Required by 'tokio'
+  (package
+   (inherit rust-tokio-macros-2)
+    (name "rust-tokio-macros")
+    (version "2.4.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "tokio-macros" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "0lnpg14h1v3fh2jvnc8cz7cjf0m7z1xgkwfpcyy632g829imjgb9"))))))
+
+(define-public rust-tokio-rustls-0.26.0 ; Required by 'reqwest'
+  (package
+   (inherit rust-tokio-rustls-0.25)
+    (name "rust-tokio-rustls")
+    (version "0.26.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "tokio-rustls" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "1m00czrmk8x7pdjnz10a3da3i1d0sdf9j9vfp5dnk5ss1q6w8yqc"))))))
+
+(define-public rust-tokio-stream-0.1.15
+  (package
+   (inherit rust-tokio-stream-0.1)
+    (name "rust-tokio-stream")
+    (version "0.1.15")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "tokio-stream" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "1brpbsqyg8yfmfc4y0j9zxvc8xsxjc31d48kb0g6jvpc1fgchyi6"))))))
+
+(define-public rust-tungstenite-0.23.0 ; Requested as input by the package 'rust-tokio-tungstenite-0.23.0' defined just below.
+  ;; Also forwarding 'features' from the package 'rust-tokio-tungstenite-0.23.0' here.
+  (package
+   (inherit rust-tungstenite-0.21)
+   (name "rust-tungstenite")
+    (version "0.23.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "tungstenite" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "1j6rxlcdky8lrwkl1qsyvnmlr38033vch11vsi7rklkywkhjqbkf"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-byteorder" ,rust-byteorder-1)
+                       ("rust-bytes" ,rust-bytes-1)
+                       ("rust-data-encoding" ,rust-data-encoding-2)
+                       ("rust-http" ,rust-http-1)
+                       ("rust-httparse" ,rust-httparse-1)
+                       ("rust-log" ,rust-log-0.4)
+                       ("rust-native-tls" ,rust-native-tls-0.2)
+                       ("rust-rand" ,rust-rand-0.8)
+                       ("rust-rustls" ,rust-rustls-0.22)
+                       ("rust-rustls-native-certs" ,rust-rustls-native-certs-0.7)
+                       ("rust-rustls-pki-types" ,rust-rustls-pki-types-1)
+                       ("rust-sha1" ,rust-sha1-0.10)
+                       ("rust-thiserror" ,rust-thiserror-1)
+                       ("rust-url" ,rust-url-2)
+                       ("rust-utf-8" ,rust-utf-8-0.7)
+                       ("rust-webpki-roots" ,rust-webpki-roots-0.26))
+       #:cargo-development-inputs (("rust-criterion" ,rust-criterion-0.5)
+                                   ("rust-env-logger" ,rust-env-logger-0.10)
+                                   ("rust-input-buffer" ,rust-input-buffer-0.5)
+                                   ("rust-rand" ,rust-rand-0.8)
+                                   ("rust-socket2" ,rust-socket2-0.5))
+
+       ;; DEBUG : IN DEV HERE - BEGINNING
+       ;; This code was copied from other package that use the '#:features' component. It was copied/pasted as so and could contain error / not needed code.
+       ;; Facing issue about 'Guix' that downloads the default source package and does not activate rbw requested features about this package.
+       #:features '("rustls-tls-native-roots" "url")
+       #:cargo-build-flags
+       '("--release" "--no-default-features")
+       #:cargo-test-flags
+       '("--release" "--no-default-features"
+         "--features" "rustls-tls-native-roots url"
+         "--")
+         ;; this test fails with permission denied error
+         ;;"--skip=test_symbolic_links")
+       #:install-source? #f
+       #:phases
+       (modify-phases %standard-phases
+          (replace 'install
+             ;; Add --no-default-features to the install phase.
+             (lambda* (#:key outputs features #:allow-other-keys)
+                (let ((out (assoc-ref outputs "out")))
+                  (invoke "cargo" "install" "--no-track"
+                          "--path" "."
+                          "--root" out
+                          "--no-default-features"
+                          "--features" (string-join features))))))
+       ;; DEBUG : IN DEV HERE - END
+
+       ))
+    (home-page "https://github.com/snapview/tungstenite-rs")
+    (synopsis "Lightweight stream-based WebSocket implementation")
+    (description
+     "This library provides an implementation of WebSockets, RFC6455.  It
+allows for both synchronous (like TcpStream) and asynchronous usage and is
+easy to integrate into any third-party event loops including MIO.  The API
+design abstracts away all the internals of the WebSocket protocol but still
+makes them accessible for those who wants full control over the network.")
+    (license (list license:expat license:asl2.0))))
+
+(define-public rust-tokio-tungstenite-0.23.0
+  (package
+    (name "rust-tokio-tungstenite")
+    (version "0.23.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "tokio-tungstenite" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "1c10wfw22z8nn0j773mfvj9p7x90hfrl2wkwpwyimqz76fi39kdy"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-futures-util" ,rust-futures-util-0.3)
+                       ("rust-log" ,rust-log-0.4)
+                       ("rust-native-tls" ,rust-native-tls-0.2)
+                       ("rust-rustls" ,rust-rustls-0.22)
+                       ("rust-rustls-native-certs" ,rust-rustls-native-certs-0.7)
+                       ("rust-rustls-pki-types" ,rust-rustls-pki-types-1)
+                       ("rust-tokio" ,rust-tokio-1)
+                       ("rust-tokio-native-tls" ,rust-tokio-native-tls-0.3)
+                       ("rust-tokio-rustls" ,rust-tokio-rustls-0.25)
+                       ("rust-tungstenite" ,rust-tungstenite-0.23.0)
+                       ("rust-webpki-roots" ,rust-webpki-roots-0.26))
+       #:cargo-development-inputs (("rust-env-logger" ,rust-env-logger-0.10)
+                                   ("rust-futures-channel" ,rust-futures-channel-0.3)
+                                   ("rust-hyper" ,rust-hyper-0.14)
+                                   ("rust-tokio" ,rust-tokio-1)
+                                   ("rust-url" ,rust-url-2))
+
+       ;; DEBUG : IN DEV HERE - BEGINNING
+       ;; This code was copied from other package that use the '#:features' component. It was copied/pasted as so and could contain error / not needed code.
+       ;; Facing issue about 'Guix' that downloads the default source package and does not activate rbw requested features about this package.
+       #:features '("rustls-tls-native-roots" "url")
+       #:cargo-build-flags
+       '("--release" "--no-default-features")
+       #:cargo-test-flags
+       '("--release" "--no-default-features"
+         "--features" "rustls-tls-native-roots url"
+         "--")
+       #:install-source? #f
+       #:phases
+       (modify-phases %standard-phases
+          (replace 'install
+             ;; Add --no-default-features to the install phase.
+             (lambda* (#:key outputs features #:allow-other-keys)
+                (let ((out (assoc-ref outputs "out")))
+                  (invoke "cargo" "install" "--no-track"
+                          "--path" "."
+                          "--root" out
+                          "--no-default-features"
+                          "--features" (string-join features))))))
+       ;; DEBUG : IN DEV HERE - END
+
+       ))
+    (home-page "https://github.com/snapview/tokio-tungstenite")
+    (synopsis "Tokio binding for Tungstenite")
+    (description
+     "This package provides Tokio binding for Tungstenite, the lightweight
+stream-based @code{WebSocket} implementation.")
+    (license license:expat)))
 
 (define-public rust-url-2.5.2
   (package
@@ -468,7 +710,6 @@
               (sha256
                (base32
                 "0503gvp08dh5mnm3f0ffqgisj6x3mbs53dmnn1lm19pga43a1pw1"))))))
-
 
 (define-public rust-x11-clipboard-0.9.1 ; Required by 'copypasta'
   (package
@@ -544,22 +785,29 @@
         ("rust-hkdf" ,rust-hkdf-0.12)
         ("rust-hmac" ,rust-hmac-0.12)
         ("rust-humantime" ,rust-humantime-2)
+	("rust-hyper-rustls" ,rust-hyper-rustls-0.27) ; Required by 'reqwest'
         ("rust-is-terminal" ,rust-is-terminal-0.4.12)
         ("rust-libc" ,rust-libc-0.2.155)
         ("rust-log" ,rust-log-0.4.22)
+	("rust-mach2" ,rust-mach2-0.4) ; Required by 'region'
+	("rust-mio" ,rust-mio-1.0.1) ; Required by 'tokio'
         ("rust-nix" ,rust-nix-0.26)
 	("rust-open" ,rust-open-5.3.0)
         ("rust-pbkdf2" ,rust-pbkdf2-0.12)
         ("rust-percent-encoding" ,rust-percent-encoding-2)
         ("rust-pkcs8" ,rust-pkcs8-0.10)
+	("rust-quinn" ,rust-quinn-0.11.1) ; Required by 'reqwest'
         ("rust-rand" ,rust-rand-0.8)
 	("rust-regex" ,rust-regex-1.10.5)
         ("rust-region" ,rust-region-3.0.2)
         ("rust-reqwest" ,rust-reqwest-0.12.5)
+	("rust-rmp" ,rust-rmp-0.8.14) ; Required by 'rmpv'
         ("rust-rmpv" ,rust-rmpv-1.3.0)
         ("rust-rsa" ,rust-rsa-0.9)
 	("rust-rustix", rust-rustix-0.38.34)
+	("rust-rustls" ,rust-rustls-0.23.4) ; Required by 'reqwest'
         ("rust-serde" ,rust-serde-1.0.204)
+	("rust-serde-derive" ,rust-serde-derive-1.0.204) ; Required by 'serde'
         ("rust-serde-json" ,rust-serde-json-1.0.120)
         ("rust-serde-path-to-error" ,rust-serde-path-to-error-0.1.16)
         ("rust-serde-repr" ,rust-serde-repr-0.1.19)
@@ -570,9 +818,12 @@
         ("rust-terminal-size" ,rust-terminal-size-0.3)
         ("rust-textwrap" ,rust-textwrap-0.16.1)
         ("rust-thiserror" ,rust-thiserror-1.0.63)
+	("rust-thiserror-impl" , rust-thiserror-impl-1.0.63) ; Required by 'thiserror'
         ("rust-tokio" ,rust-tokio-1.39.2)
+	("rust-tokio-macros" ,rust-tokio-macros-2.4.0) ; Required by 'tokio'
+	("rust-tokio-rustls" ,rust-tokio-rustls-0.26.0) ; Required by 'reqwest'
         ("rust-tokio-stream" ,rust-tokio-stream-0.1.15)
-        ("rust-tokio-tungstenite" ,rust-tokio-tungstenite-0.23.0)
+	("rust-tokio-tungstenite" ,rust-tokio-tungstenite-0.23.0)	    
         ("rust-totp-lite" ,rust-totp-lite-2)
         ("rust-url" ,rust-url-2.5.2)
 	("rust-urlencoding" ,rust-urlencoding-2)
